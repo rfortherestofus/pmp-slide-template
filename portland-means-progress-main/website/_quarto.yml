@@ -1,0 +1,25 @@
+project:
+  type: website
+  preview:
+    port: 4200
+
+website:
+  search: false
+  navbar:
+    logo: pmp-logo.png
+    right:
+      - href: index.qmd
+        text: Completion Rates
+      - href: results.qmd
+        text: Results
+
+format:
+  html:
+    theme:
+      - cosmo
+      - styles.scss
+    fontsize: 1.1em
+    smooth-scroll: true
+    anchor-sections: false
+    grid:
+      sidebar-width: 350px

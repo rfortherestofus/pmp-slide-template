@@ -1,0 +1,118 @@
+---
+title: Some Example Slides 
+format:
+  revealjs:
+    menu: false
+    progress: false
+    slide-number: true
+    show-slide-number: print
+    incremental: true
+    title-slide-attributes:
+        data-background-image: ../../../../../assets/imgs/Background.png
+        data-background-size: cover
+        data-background-position: bottom left
+        data-background-repeat: no-repeat
+    theme: theme.scss
+
+---
+
+
+## A headline {.theme-two-cols}
+
+:::: {.custom-grid}
+
+::: {.left-col}
+
+This content goes into the left column.
+The headline on the left column comes from the headline of this section.
+
+:::
+
+
+::: {.right-col style="margin-top: -75px;"}
+
+This content goes into the right column.
+
+:::
+
+::::
+
+{{< pmp-footer >}}
+
+
+## A headline {.theme-two-cols .yellow}
+
+:::: {.custom-grid}
+
+::: {.left-col}
+
+This content goes into the left column.
+The headline on the left column comes from the headline of this section.
+
+:::
+
+
+::: {.right-col style="margin-top: -75px;"}
+
+This content goes into the right column.
+
+:::
+
+::::
+
+{{< pmp-footer >}}
+
+
+## Desired headline {.theme-two-cols .no-left-heading .yellow}
+
+
+:::: {.custom-grid}
+
+::: {.left-col}
+
+:::
+
+
+::: {.right-col style="margin-top: 0px;"}
+
+::: {.right-heading}
+Desired headline
+:::
+
+Rest of right side content goes here.
+
+:::
+
+::::
+
+
+{{< pmp-footer >}}
+
+
+## Desired Headline {.theme-two-cols .dark-yellow}
+
+:::: {.custom-grid}
+
+::: {.left-col}
+
+Some text here. 
+Or some other content.
+The choice is absolutely yours.
+
+:::
+
+
+::: {.right-col}
+
+::: {.quote-box}
+Some deep meaningful quote can be found in there.
+:::
+
+:::
+
+::::
+
+{{< pmp-footer >}}
+
+
+## Thank you {.callout-slide .center}

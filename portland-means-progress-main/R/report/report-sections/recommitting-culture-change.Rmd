@@ -1,0 +1,26 @@
+
+
+<div class = "page-dark-yellow">
+
+<div class = "wrap-columns">
+
+<div class = "columns-35">
+
+## Culture Change in `r params$report_year + 1`
+
+What is your top priority in `r params$report_year + 1` to advance your internal Culture Change goals (may be related to policies, practices, or actions)?
+
+</div>
+<div class = "columns-65">
+
+```{r quote_cc, fig.width=6}
+text_viz(data = df_pmp_data,
+         continue_priority_culture,
+         quote_color = pmp_palette$`Dark yellow`)
+```
+
+
+</div>
+</div>
+
+</div>

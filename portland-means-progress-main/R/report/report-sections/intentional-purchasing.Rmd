@@ -1,0 +1,196 @@
+
+<div class = "page-dark-purple">
+
+<div class = "wrap-columns">
+
+<div class = "columns-35">
+
+## Intentional Purchasing
+
+Did your business implement any of the following policies, practices, or actions?
+
+</div>
+<div class = "columns-65">
+
+```{r menu_q13}
+menu_across_years(
+  data = df_pmp_data,
+  questions = df_questions_label,
+  question_block = "q13",
+  point_color = pmp_palette$`Dark purple`
+)
+```
+
+</div>
+</div>
+
+</div>
+
+<!-- Intentional Purchasing -->
+
+<div class = "page-dark-purple">
+
+<div class = "wrap-columns">
+
+<div class = "columns-35">
+
+## Intentional Purchasing
+
+How many dollars did your business spend on purchases from businesses in the Portland Metro area that are BIPOC-owned and what percentage of your business’s purchases were from businesses in the Portland Metro area that are BIPOC-owned?
+
+</div>
+<div class = "columns-65">
+
+```{r line_q16_18, fig.height = 5}
+# compute percentage data
+df_percent_data <- df_pmp_data |>
+  select(year, percentage_purchase) |>
+  # filter(!is.na(percentage_purchase) &
+  #          percentage_purchase != "I'm not sure") |>
+  separate(
+    percentage_purchase,
+    sep = "-",
+    into = c("min_percent", "max_percent"),
+    remove = FALSE
+  ) |>
+  # in 2024 we have a single percent a not a range
+  mutate(
+    max_percent = coalesce(max_percent, min_percent),
+    min_percent = as.numeric(min_percent),
+    max_percent = as.numeric(max_percent),
+    labels = case_when(
+      is.na(min_percent) ~ "Did not<br>track<br>%",
+      TRUE ~ paste0(percentage_purchase, "%")
+    ),
+    labels_y = case_when(labels == "Did not<br>track<br>%" ~ 50, TRUE ~ max_percent + 5)
+  )
+
+# percentage plot
+percent_plot <- ggplot(df_percent_data, colour = pmp_palette$`Dark teal`) +
+  geom_bar(aes(x = year, y = 100),
+           stat = "identity",
+           fill = pmp_palette$`Mid teal`) +
+  geom_bar(
+    aes(x = year, y = max_percent),
+    stat = "identity",
+    fill = pmp_palette$`Light purple`,
+    alpha = 1
+  ) +
+  geom_bar(
+    aes(x = year, y = min_percent),
+    stat = "identity",
+    fill = pmp_palette$`Mid teal`,
+    alpha = 0.5
+  ) +
+  ggtext::geom_textbox(
+    aes(x = year, y = labels_y, label = labels),
+    hjust = 0.5,
+    halign = 0.5,
+    family = "Gilroy ExtraBold",
+    size = 7,
+    colour = pmp_palette$`Light blue`,
+    fill = NA,
+    box.colour = NA
+  ) +
+  theme_minimal() +
+  scale_x_continuous(limits = c(
+    min(df_percent_data$year) - 0.5,
+    max(df_percent_data$year) + 0.5
+  ),
+  breaks = unique(df_percent_data$year)) +
+  theme(
+    panel.background = element_rect(fill = pmp_palette$`Dark teal`, color = pmp_palette$`Dark teal`),
+    plot.background = element_rect(fill = pmp_palette$`Dark teal`, color = pmp_palette$`Dark teal`),
+    axis.text.x = element_blank(),
+    axis.text.y = element_blank(),
+    legend.position = "none",
+    axis.title = element_blank(),
+    panel.grid = element_blank()
+  )
+
+# same for amount data
+df_amount_data <- df_pmp_data |>
+  select(year, dollars_spent_purchases) |>
+  mutate(
+    na_labels = case_when(is.na(dollars_spent_purchases) ~ "Did not track<br>$", TRUE ~ ""),
+    na_y_coord = case_when(
+      is.na(dollars_spent_purchases) ~ 0,
+      TRUE ~ dollars_spent_purchases
+    )
+  )
+
+# amount plot
+amount_plot <-
+  ggplot(df_amount_data, aes(x = year, y = dollars_spent_purchases)) +
+  geom_line(colour = pmp_palette$`Light blue`,
+            size = 3,
+            alpha = 0.3) +
+  geom_point(
+    aes(size = dollars_spent_purchases),
+    colour = pmp_palette$`Dark teal`,
+    fill = pmp_palette$`Light purple`,
+    shape = 21,
+    stroke = 4
+  ) +
+  ggtext::geom_textbox(
+    aes(label = paste0(
+      "$", grkmisc::pretty_num(dollars_spent_purchases)
+    )),
+    hjust = 0.5,
+    halign = 0.5,
+    vjust = -0.5,
+    valign = 0,
+    size = 12,
+    family = "Gilroy ExtraBold",
+    colour = pmp_palette$`Light blue`,
+    box.colour = NA,
+    fill = NA
+  ) +
+  ggtext::geom_textbox(
+    aes(label = na_labels, x = year, y = na_y_coord),
+    hjust = 0.5,
+    halign = 0.5,
+    vjust = 0,
+    valign = 0,
+    size = 8,
+    family = "Gilroy ExtraBold",
+    colour = pmp_palette$`Light blue`,
+    box.colour = NA,
+    fill = NA
+  ) +
+  scale_size(range = c(10, 20)) +
+  scale_y_continuous(expand = expansion(mult = c(1, 2))) +
+  scale_x_continuous(limits = c(
+    min(df_percent_data$year) - 0.5,
+    max(df_percent_data$year) + 0.5
+  ),
+  breaks = unique(df_percent_data$year)) +
+  theme(
+    panel.background = element_rect(fill = pmp_palette$`Dark teal`, color = pmp_palette$`Dark teal`),
+    plot.background = element_rect(fill = pmp_palette$`Dark teal`, color = pmp_palette$`Dark teal`),
+    axis.text.x = element_text(
+      colour = pmp_palette$Teal,
+      family = "Gilroy ExtraBold",
+      size = 18
+    ),
+    axis.text.y = element_blank(),
+    legend.position = "none",
+    # instead of element_blank() we're making it disappear through colours to keep alignment
+    axis.title = element_text(
+      colour = pmp_palette$`Dark teal`,
+      family = "Gilroy Medium",
+      size = 10
+    ),
+    panel.grid = element_blank()
+  )
+
+# print plots
+cowplot::plot_grid(amount_plot, percent_plot, ncol = 1, align = "v") +
+  theme(plot.background = element_rect(fill = pmp_palette$`Dark teal`, color = pmp_palette$`Dark teal`))
+
+```
+
+</div>
+</div>
+
+</div>

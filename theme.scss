@@ -1,0 +1,224 @@
+/*-- scss:defaults --*/
+
+$dark-teal: #0E3D49;
+$mid-teal: #185E62;
+$teal: #1C9DA3;
+$two-column-teal: #123c48;
+$two-column-heading-teal: #1d9da3;
+$yellow: #FFC95A;
+$gray: #ACBDBA;
+$light-blue: #6FCBCF;
+$dark-purple: #6F5D9B;
+$mid-purple: #9E52A8;
+$light-purple: #9A82D5;
+$dark-yellow: #BF9115;
+$dark-gray: #596764;
+
+
+@font-face {
+    font-family: 'Gilroy';
+    src: url('../../../../../assets/fonts/Gilroy-ExtraBold.otf') format('opentype');
+    font-weight: 800;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Gilroy';
+    src: url('../../../../../assets/fonts/Gilroy-Medium.otf') format('opentype');
+    font-weight: 500;
+    font-style: normal;
+}
+
+$presentation-h1-font-size: 1.6em;
+$presentation-h2-font-size: 1.1em;
+$presentation-heading-font: Gilroy;
+$presentation-headings-font-weight: 800;
+$presentation-heading-color: white;
+$presentation-heading-line-height: 1.1;
+
+/*-- scss:mixins --*/
+
+@mixin background-full {
+    background-size: cover;
+    background-position: left bottom;
+    background-repeat: no-repeat;
+}
+
+/*-- scss:rules --*/
+
+// Styling for title slide
+section#title-slide {
+    top: 150px !important;
+}
+h1 {
+    // underlined
+    &::after {
+        content: '';
+        position: absolute;
+        left: 25%;
+        bottom: -20px;
+        width: 50%;
+        height: 0.2em; 
+        background-color: $yellow; 
+    }
+}
+
+section.no-left-heading  h2 {
+    display: none;
+}
+
+
+@mixin theme-two-cols-style($heading-color) {
+    h2 {
+        color: $heading-color;
+        width: 300px;
+        margin-top: 150px;
+    }
+
+    
+
+    .right-heading > p {
+        font-size: $presentation-h2-font-size !important;
+        color: $heading-color;
+        margin-top: 150px;
+    }
+
+
+    .color-bar {
+        background:$heading-color;
+        height:10px;
+        width: 500px; 
+        margin-top:-20px;
+        position: absolute;
+        right:0;
+    }
+
+    p {
+        line-height: 1.25;
+        font-size: 0.45em;
+        font-weight: 800;
+        font-family: Gilroy;
+    }
+
+    .two-col-footer {
+        position:absolute; 
+        bottom: 0; 
+        width:100px
+    }
+
+    &:is(.slide-background) {
+        background: linear-gradient(to right, white 0%, white 40%, $two-column-teal 40%, $two-column-teal 100%);;
+    }
+
+}
+
+@mixin quotation-mark($color) {
+    /* Top decoration: line, quote mark, line */
+    .quote-box p::before {
+        content: "\f10d";
+        display: block;
+        font-family: FontAwesome;
+        font-size: 72px;
+        width: 100px;
+        height: 75px;
+        padding-right:15px;
+        padding-left:5px;
+        background:$two-column-teal;
+        color: $color;
+
+        position: absolute;
+        top:0;
+        left: 40%
+    }
+}
+
+.theme-two-cols {
+    @include theme-two-cols-style($two-column-heading-teal);
+
+    .quote-box {
+        position: relative;
+        padding: 2rem;
+        text-align: center;
+     }
+    
+    .quote-box p {
+        border-top: 4px solid $mid-teal; /* Bottom line */
+        border-bottom: 4px solid $mid-teal; /* Bottom line */
+        padding-top: 3.5rem;
+        padding-bottom: 3rem;
+        color: $light-blue;
+        font-size: 1.6rem !important;
+    }
+    
+    @include quotation-mark($two-column-teal);
+    
+    &.yellow {
+        @include theme-two-cols-style($yellow);
+        @include quotation-mark($two-column-teal);
+    }
+
+    &.dark-purple {
+        @include theme-two-cols-style($dark-purple);
+        @include quotation-mark($dark-purple);
+    }
+
+    &.dark-yellow {
+        @include theme-two-cols-style($dark-yellow);
+        @include quotation-mark($dark-yellow);
+    }
+
+    &.light-purple {
+        @include theme-two-cols-style($light-purple);
+        @include quotation-mark($light-purple);
+    }
+}
+
+
+.custom-grid {
+    display: grid;
+    grid-template-columns: 35fr 65fr;
+    column-gap: 75px;
+
+
+    .right-col {
+        color: white;
+        margin-top: -125px;
+    }
+}
+
+// Styling for two-column style ------------
+.text-container-below-left-title {
+    font-size: 0.45em;
+    font-weight: 800;
+    font-family: Gilroy;
+    p {
+        line-height: 1;
+    }
+    position: relative;
+    width: 300px;
+    top: 25%
+}
+
+
+
+
+
+// Styling for callout slide (like thank you) ------------
+.callout-slide {
+    h2 {
+        text-align: center;
+        font-size: $presentation-h1-font-size;
+    }
+
+    &:is(.slide-background) {
+        background-image: url('../../../../../assets/imgs/Background.png');
+        @include background-full
+    }
+}
+
+
+
+
+
+    
+  

@@ -38,6 +38,8 @@ vignettes/*.pdf
 
 # R Environment Variables
 .Renviron
+.Rprofile
+.env
 
 # pkgdown site
 docs/
@@ -47,3 +49,8 @@ po/*~
 
 # RStudio Connect folder
 rsconnect/
+
+template_files/
+example_files/
+*.html
+_quarto_internal_scss_error.scss

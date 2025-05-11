@@ -1,0 +1,425 @@
+---
+title: Portland Means Progress Slides Template
+format:
+  revealjs:
+    menu: false
+    progress: false
+    slide-number: true
+    show-slide-number: print
+    incremental: true
+    title-slide-attributes:
+        data-background-image: ../../../../../assets/imgs/Background.png
+        data-background-size: cover
+        data-background-position: bottom left
+        data-background-repeat: no-repeat
+    theme: theme.scss
+
+---
+
+
+## Introduction {.theme-two-cols .no-left-heading .yellow}
+
+
+:::: {.custom-grid}
+
+::: {.left-col}
+
+:::
+
+
+::: {.right-col style="margin-top: 0px;"}
+
+::: {.right-heading}
+Introduction
+:::
+
+Hello, Portland Means Progress businesses! This Company Dashboard
+includes data you’ve provided in Portland Means Progress annual reporting
+since you joined the initiative. Each year, we’ll provide your company an
+Annual Company Dashboard to provide information for you to reflect on
+your progress, celebrate movement, and consider your future actions to
+advance racial equity within your organization as well as in our community.
+The annual reporting has informed our collective Impact Report, and now
+your organizations’ specific information is available to you for individual
+reflection. This information remains confidential to your business and is held
+by a third party company. If any thing in the report appears inconsistent
+with your information, please let R for the Rest of Us know.
+The data are displayed in several different graph styles to better help you
+visualize what you reported. Circle plots help you see what commitments
+you’ve made over the years, with each dot corresponding to the
+commitment and each circle representing a single year. Line charts show
+change over time. And we include verbatim quotes to provide texture to the
+data.
+
+Our intention is to provide another way for your organization to be
+intentional in your DEI work. Please feel free to reach out with any questions
+and we’re excited to continue our partnership.
+
+Best,<br>
+The Portland Means Progress Team
+
+:::
+
+::::
+
+
+{{< pmp-footer >}}
+
+
+
+## Intro {.theme-two-cols}
+
+:::: {.custom-grid}
+
+::: {.left-col }
+
+Which action(s) did your business commit
+to through Portland Means Progress?
+
+:::
+
+
+::: {.right-col style="margin-top: -75px;"}
+
+Some chart here
+
+:::
+
+::::
+
+
+
+{{< pmp-footer >}}
+
+
+## Intro {.theme-two-cols}
+
+:::: {.custom-grid}
+
+::: {.left-col}
+
+Did your business make progress on any
+of the other Portland Means Progress
+actions that you didn’t originally commit
+to?
+
+:::
+
+
+::: {.right-col style="margin-top: -75px;"}
+
+Some chart here
+
+:::
+
+::::
+
+
+{{< pmp-footer >}}
+
+
+
+## Work Experience {.theme-two-cols .yellow}
+
+:::: {.custom-grid}
+
+::: {.left-col}
+
+How many interns did your business host
+in the Portland Metro area?
+
+:::
+
+
+::: {.right-col}
+
+Some table here
+
+:::
+
+::::
+
+{{< pmp-footer >}}
+
+
+## Work Experience {.theme-two-cols .yellow}
+
+:::: {.custom-grid}
+
+::: {.left-col}
+
+Did your business implement any of the
+following policies, practices, or actions?
+
+:::
+
+
+::: {.right-col}
+
+Yet another chart
+
+:::
+
+::::
+
+{{< pmp-footer >}}
+
+
+
+
+## Intentional Purchasing {.theme-two-cols .dark-purple}
+
+:::: {.custom-grid}
+
+::: {.left-col}
+
+Did your business implement any of the
+following policies, practices, or actions?
+
+:::
+
+
+::: {.right-col}
+
+Yet another chart
+
+:::
+
+::::
+
+{{< pmp-footer >}}
+
+
+
+## Intentional Purchasing {.theme-two-cols .dark-purple}
+
+:::: {.custom-grid}
+
+::: {.left-col}
+
+How many dollars did your business
+spend on purchases from businesses in
+the Portland Metro area that are BIPOC-
+owned and what percentage of your
+business’s purchases were from
+businesses in the Portland Metro area
+that are BIPOC-owned?
+
+:::
+
+
+::: {.right-col}
+
+Yet another chart
+
+:::
+
+::::
+
+{{< pmp-footer >}}
+
+
+## Culture Change {.theme-two-cols .dark-yellow}
+
+:::: {.custom-grid}
+
+::: {.left-col}
+
+Did your business implement any of the
+following policies, practices, or actions?
+
+:::
+
+
+::: {.right-col}
+
+That round chart again
+
+:::
+
+::::
+
+{{< pmp-footer >}}
+
+
+## Culture Change continued {.theme-two-cols .dark-yellow}
+
+:::: {.custom-grid}
+
+::: {.left-col}
+TODO
+TODO
+TODO
+ 
+
+:::
+
+
+::: {.right-col}
+
+Here, I still have to add a functionality to add a full dark-teal slide
+
+:::
+
+::::
+
+{{< pmp-footer >}}
+
+
+
+## Meaningful Action {.theme-two-cols .light-purple}
+
+:::: {.custom-grid}
+
+::: {.left-col}
+
+Please share about a time when your
+business took meaningful action to
+address work experience, intentional
+purchasing, culture change, or other
+equity issues*
+
+*Response provided in the Annual
+Reporting survey
+
+:::
+
+
+::: {.right-col}
+
+
+::: {.quote-box}
+
+This year our focus was LGBTQ, working specify with team members to understand & implement proper pronoun use.
+Currently we are working to establish communication with the retail public on pronouns with productive non confrontational language...
+
+:::
+
+:::
+
+::::
+
+{{< pmp-footer >}}
+
+## Recommitting in 2025 {.theme-two-cols .light-purple}
+
+:::: {.custom-grid}
+
+::: {.left-col}
+
+Which Portland Means Progress action(s)
+does your business commit to in 2025?
+
+:::
+
+
+::: {.right-col}
+
+Round chart again
+
+:::
+
+::::
+
+{{< pmp-footer >}}
+
+## Work Experience in 2025 {.theme-two-cols .yellow}
+
+:::: {.custom-grid}
+
+::: {.left-col}
+
+Which of the following internship and
+workplace experience programs does
+your business plan on implementing or
+continuing in 2025?
+
+:::
+
+
+::: {.right-col style="margin-top: -175px;"}
+
+Round chart again
+
+:::
+
+::::
+
+{{< pmp-footer >}}
+
+
+## Work Experience in 2025 {.theme-two-cols .yellow}
+
+:::: {.custom-grid}
+
+::: {.left-col}
+
+Which of the following policies, practices,
+or actions does your business plan on
+implementing or continuing in 2025?
+
+:::
+
+
+::: {.right-col style="margin-top: -175px;"}
+
+Round chart again
+
+:::
+
+::::
+
+{{< pmp-footer >}}
+
+## Intentional Purchasing in 2025 {.theme-two-cols .yellow}
+
+:::: {.custom-grid}
+
+::: {.left-col}
+
+Which of the following policies, practices,
+or actions does your business plan on
+implementing or continuing in 2025?
+
+:::
+
+
+::: {.right-col style="margin-top: -175px;"}
+
+Round chart again
+
+:::
+
+::::
+
+{{< pmp-footer >}}
+
+
+## Culture Change in 2025 {.theme-two-cols .dark-yellow}
+
+:::: {.custom-grid}
+
+::: {.left-col}
+
+What is your top priority in 2025 to
+advance your internal Culture Change
+goals (may be related to policies,
+practices, or actions)?
+
+:::
+
+
+::: {.right-col style="margin-top: -175px;"}
+
+::: {.quote-box}
+Implementation of training guidelines for appropriate  language and communication in regulars to pronoun use...
+:::
+
+:::
+
+::::
+
+{{< pmp-footer >}}
+
+
+## Thank you {.callout-slide .center}

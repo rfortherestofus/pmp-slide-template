@@ -1,0 +1,317 @@
+---
+output:
+  pagedown::html_paged:
+    css: "../../assets/layout/main.css"
+    number_sections : FALSE
+params:
+  business: "Cargo"
+  report_year: 2024
+knit: pagedown::chrome_print
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(
+  # To get the fonts to play nicely within the Rmd-generated images
+  dev = "ragg_png",
+  echo = FALSE,
+  message = FALSE,
+  warning = FALSE,
+  error = FALSE,
+  # Larger image size makes for better resolution
+  fig.width = 10.3,
+  fig.height = 9
+)
+```
+
+```{r load}
+library(tidyverse)
+library(here)
+
+# data + filter to business
+df_pmp_data <- read_rds(here("data/pp_2019-2024_clean.rds")) |> 
+  filter(business == params$business) |> 
+  # --> back to data cleaning step
+  mutate(year = as.numeric(year))
+
+# Questions and rephrased options
+df_questions_label <- readxl::read_excel(here("data/viz-questions_2024.xlsx")) %>%
+  select(word_doc_q, survey_item, question_text, present_2024) %>%
+  filter(is.na(present_2024)) |>
+  separate(col = question_text,
+           into = c("question", "answer"),
+           sep = "\\?|:") %>%
+  # To get round inconsistent spaces after ":" or "?"
+  mutate(
+    answer = stringr::str_squish(answer),
+    answer = gsub("\\(\\{year\\} to \\{year\\}\\)|in \\{year\\}", "", answer)
+  )
+
+# Include the section only if they committed to this set of actions, 
+# or if they made progress despite not having committed
+expand_section <- function(section, year, ...) {
+  if (any(df_pmp_data |>
+          select(...) |>
+          unlist() |>
+          unname() == "Yes",
+          na.rm = TRUE)) {
+    knitr::knit_expand(here(paste0("R/report/report-sections/", section, ".Rmd")), report_year = year) |>
+      unlist() %>%
+      knitr::knit_child(text = ., quiet = TRUE) %>%
+      unlist() %>%
+      cat(.)
+  }
+}
+
+# palette
+pmp_palette <- list(
+  "Dark teal" = "#0E3D49",
+  "Mid teal" = "#185E62",
+  "Teal" = "#1C9DA3",
+  "Yellow" = "#FFC95A",
+  "Gray" = "#ACBDBA",
+  "Light blue" = "#6FCBCF",
+  "Dark purple" = "#6F5D9B",
+  "Mid purple" = "#9E52A8",
+  "Light purple" = "#9A82D5",
+  "Dark yellow" = "#BF9115",
+  "Dark gray" = "#596764"
+)
+
+# fonts & icons
+systemfonts::register_variant("Font Awesome Solid", family = "Font Awesome 6 Free", weight = "heavy")
+systemfonts::register_font("Gilroy ExtraBold",
+                           plain = here("assets/fonts/Gilroy-ExtraBold.otf"))
+systemfonts::register_font("Gilroy Medium", plain = here("assets/fonts/Gilroy-Medium.otf"))
+systemfonts::register_variant("Font Awesome Solid", family = "Font Awesome 6 Free", weight = "heavy")
+
+# load graph functions
+source(here("R/viz/menu-viz.R"))
+source(here("R/viz/text_viz.R"))
+```
+
+---
+title: `r params$business`
+subtitle: "`r params$report_year` Annual Reporting"
+---
+
+```{r hook_figure}
+# hook from https://bookdown.org/yihui/rmarkdown-cookbook/hook-html5.html
+if (knitr::is_html_output()) knitr::knit_hooks$set(
+  plot = function(x, options) {
+    cap  <- options$fig.cap  # figure caption
+    tags <- htmltools::tags
+    as.character(tags$figure(
+      tags$img(src = x, alt = cap)
+    ))
+  }
+)
+```
+
+\newpage
+
+<!-- Intro text -->
+
+<div class = "page-yellow">
+<div class = "wrap-columns">
+<div class = "columns-35">
+
+</div>
+
+<div class = "columns-65-else" style = "padding-left: 0px; padding-right: 0px;">
+<div style = "padding-left: 0.55in">
+
+## Introduction
+
+<p style="color:white; size:12pt; text-align: justify; text-justify: inter-word;">
+Hello, Portland Means Progress businesses! This Company Dashboard includes data you’ve provided in Portland Means Progress annual reporting since you joined the initiative. Each year, we’ll provide your company an Annual Company Dashboard to provide information for you to reflect on your progress, celebrate movement, and consider your future actions to advance racial equity within your organization as well as in our community. The annual reporting has informed our collective Impact Report, and now your organizations’ specific information is available to you for individual reflection. This information remains confidential to your business and is held by a third party company. If any thing in the report appears inconsistent with your information, please let R for the Rest of Us know.
+</p>
+
+<p style="color:white; text-align: justify; text-justify: inter-word;">
+The data are displayed in several different graph styles to better help you visualize what you reported. Circle plots help you see what commitments you’ve made over the years, with each dot corresponding to the commitment and each circle representing a single year. Line charts show change over time. And we include verbatim quotes to provide texture to the data.
+</p>
+
+<p style="color:white; text-align: justify; text-justify: inter-word;">
+Our intention is to provide another way for your organization to be intentional in your DEI work. Please feel free to reach out with any questions and we’re excited to continue our partnership.
+</span>
+
+<p style="color:white">
+Best,
+</p>
+
+<p style="color:white">
+The Portland Means Progress Team
+</p>
+
+</div>
+</div>
+</div>
+</div>
+
+<!-- Intro text -->
+
+<div class = "page-teal">
+<div class = "wrap-columns">
+<div class = "columns-35">
+
+## Intro
+
+Which action(s) did your business commit to through Portland Means Progress?
+
+</div>
+<div class = "columns-65">
+
+```{r menu_q01}
+menu_across_years(
+  data = df_pmp_data,
+  questions = df_questions_label,
+  question_block = "q01",
+  point_color = pmp_palette$Teal
+)
+```
+
+</div>
+</div>
+</div>
+
+<!-- Intro -->
+
+<div class = "page-teal">
+<div class = "wrap-columns">
+<div class = "columns-35">
+
+## Intro
+
+Did your business make progress on any of the other Portland Means Progress actions that you didn’t originally commit to?
+
+</div>
+<div class = "columns-65">
+
+```{r menu_q03}
+menu_across_years(
+  data = df_pmp_data,
+  questions = df_questions_label,
+  question_block = "q03",
+  point_color = pmp_palette$Yellow
+)
+```
+
+</div>
+</div>
+</div>
+
+<!-- Work experience -->
+```{r work_experience, results='asis'}
+expand_section(section = "work-experience",
+               year = params$report_year,
+               action_work,
+               progress_work)
+```
+
+
+<!-- Intentional Purchasing -->
+
+```{r intentional_purchasing, results='asis'}
+expand_section(
+  section = "intentional-purchasing",
+  year = params$report_year,
+  action_purchasing,
+  progress_purchasing
+)
+```
+
+<!-- Culture change -->
+
+```{r culture_change, results='asis'}
+expand_section(section = "culture-change",
+               year = params$report_year,
+               action_culture,
+               progress_culture)
+```
+
+<!-- E-Zone business -->
+
+```{r e_zone, results='asis'}
+expand_section(section = "e-zone", year = params$report_year, ezone)
+```
+
+
+<!-- Recommitting -->
+
+<div class = "page-light-purple">
+<div class = "wrap-columns">
+<div class = "columns-35">
+
+## Meaningful Action
+
+Please share about a time when your business took meaningful action to address work experience, intentional purchasing, culture change, or other equity issues*
+
+*Response provided in the Annual Reporting survey
+
+</div>
+<div class = "columns-65">
+
+```{r quote_q34_2019, fig.width=6}
+text_viz(data = df_pmp_data, meaningful_action)
+```
+
+</div>
+</div>
+</div>
+
+<!-- Additional slides -->
+
+<!-- Note: for this and all the following plots I want to include only the most recent year, and get rid of the year label (so it won't say 2021 because that would be confusing, as they're recommitting for 2022); does that sound like a good approach?  -->
+
+
+<!-- Recommitting -->
+
+<div class = "page-light-purple">
+<div class = "wrap-columns">
+<div class = "columns-35">
+
+## Recommitting in `r params$report_year + 1`
+
+Which Portland Means Progress action(s) does your business commit to in `r params$report_year + 1`?
+</div>
+<div class = "columns-65">
+
+```{r menu_q38}
+menu_across_years(
+  data = df_pmp_data,
+  questions = df_questions_label,
+  question_block = "q38",
+  point_color = pmp_palette$`Light purple`
+)
+```
+
+</div>
+</div>
+</div>
+
+<!-- Work experience -->
+
+```{r recommitting_work_experience, results='asis'}
+expand_section(section = "recommitting-work-experience", year = params$report_year, commit_work)
+```
+
+<!-- Intentional Purchasing -->
+
+```{r recommitting_intentional_purchasing, results='asis'}
+expand_section(section = "recommitting-intentional-purchasing",
+               year = params$report_year,
+               commit_purchasing)
+```
+
+<!-- Culture Change -->
+
+```{r recommitting_cc, results='asis'}
+expand_section(section = "recommitting-culture-change",
+               year = params$report_year,
+               commit_culture)
+```
+
+<div class = "page-closing">
+
+## Thank you
+
+</div>

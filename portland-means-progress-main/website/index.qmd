@@ -1,0 +1,250 @@
+---
+title: Completion Rates
+format:
+  html:
+    toc: false
+    page-layout: full
+---
+
+```{r}
+#| include: FALSE
+knitr::opts_chunk$set(warning = FALSE, message = FALSE, echo = FALSE)
+
+library(here)
+library(writexl)
+library(tidyverse)
+library(gt)
+library(glue)
+source(here("R/viz/table.R"))
+source(here("R/misc/date.R"))
+source(here("R/viz/download-button.R"))
+
+df_survey_info <- read_csv(
+  here("data-raw", "contact_files", "tokens_179359.csv")
+) |>
+  select(business = firstname, token) |>
+  mutate(
+    unique_link = paste0(
+      "https://rfortherestofus.limesurvey.net/179359?token=",
+      token,
+      "&lang=en"
+    )
+  )
+
+df <- readRDS(here("data", "completion_rates_2024.rds")) |>
+  filter(business != "TEST") |>
+  left_join(df_survey_info, by = "business") |>
+  select(
+    business,
+    has_started,
+    has_finished,
+    ezone,
+    primary_contact_email,
+    unique_link
+  ) |>
+  mutate(
+    unique_link = sprintf(
+      '<a href = "%s" target="_blank" style="color: #1c9da3;">Link ↗</a>',
+      unique_link
+    ),
+    unique_link = map(unique_link, gt::html)
+  ) |>
+  mutate(primary_contact_email = tolower(primary_contact_email)) |>
+  mutate(
+    primary_contact_email = str_extract(
+      primary_contact_email,
+      "[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[A-Za-z]{2,}"
+    )
+  ) |>
+  rename(
+    Business = "business",
+    Started = "has_started",
+    Completed = "has_finished",
+    `E-Zone` = "ezone",
+    Email = "primary_contact_email",
+    Survey = "unique_link"
+  ) |>
+  mutate(`E-Zone` = recode(`E-Zone`, "Yes" = "✅", "No" = "❌"))
+```
+
+```{r, results='asis'}
+text <- glue("Last updated *{current_date}*")
+cat(text)
+```
+
+## Overview
+
+```{r}
+df[sample(1:nrow(df)), ] |>
+  gt() |>
+  format_qualitative(page_size_default = 10) |>
+  cols_width(
+    Business ~ px(300),
+    Email ~ px(300)
+  ) |>
+  pmp_table_theme()
+```
+
+<br/>
+
+## Surveys started
+
+```{r, results='asis'}
+n_started <- df |>
+  filter(Started == "Yes") |>
+  count()
+n_started_percent <- round(n_started / nrow(df) * 100, 1)
+
+text <- glue(
+  "At the moment the survey has been started by **{n_started$n} businesses** ({n_started_percent$n}%)."
+)
+cat(text)
+```
+
+::: {.panel-tabset .nav-pills}
+
+### Started
+
+```{r}
+df_with_condition <- df |>
+  filter(Started == "Yes") |>
+  select(-c(Started, Survey))
+
+df_with_condition |>
+  gt() |>
+  format_qualitative() |>
+  cols_width(
+    Business ~ px(300)
+  ) |>
+  pmp_table_theme()
+
+download_button(df_with_condition, "download-qualitative/started.xlsx")
+```
+
+
+### Not started
+
+```{r}
+df_with_condition <- df |>
+  filter(Started == "No") |>
+  select(-c(Started, Survey))
+
+df_with_condition |>
+  gt() |>
+  format_qualitative() |>
+  cols_width(
+    Business ~ px(300)
+  ) |>
+  pmp_table_theme()
+
+download_button(df_with_condition, "download-qualitative/not-started.xlsx")
+```
+
+
+
+### E-Zone only
+
+```{r}
+df_with_condition <- df |>
+  filter(`E-Zone` == "✅") |>
+  select(-c(`E-Zone`, Started, Survey))
+
+df_with_condition |>
+  gt() |>
+  format_qualitative() |>
+  cols_width(
+    Business ~ px(300)
+  ) |>
+  pmp_table_theme()
+
+download_button(df_with_condition, "download-qualitative/started-ezone.xlsx")
+```
+
+:::
+
+<br/>
+
+## Surveys completed
+
+```{r, results='asis'}
+n_completed <- df |>
+  filter(Completed == "Yes") |>
+  count()
+n_completed_percent <- round(n_completed / nrow(df) * 100, 1)
+
+text <- glue(
+  "At the moment the survey has been completed by **{n_completed$n} businesses** ({n_completed_percent$n}%)."
+)
+cat(text)
+
+completed_among_started <- round(n_completed / n_started * 100, 1)
+text <- glue(
+  "Which means that **{completed_among_started}%** of the businesses who started the survey ({n_started}) have also completed ({n_completed}) it."
+)
+cat("\n\n")
+cat(text)
+```
+
+::: {.panel-tabset .nav-pills}
+
+### Completed
+
+```{r}
+df_with_condition <- df |>
+  filter(Completed == "Yes") |>
+  select(-c(Survey))
+
+df_with_condition |>
+  gt() |>
+  format_qualitative() |>
+  cols_width(
+    Business ~ px(300)
+  ) |>
+  pmp_table_theme()
+
+download_button(df_with_condition, "download-qualitative/completed.xlsx")
+```
+
+### Not completed
+
+```{r}
+df_with_condition <- df |>
+  filter(Completed == "No") |>
+  select(-c(Survey))
+
+df_with_condition |>
+  gt() |>
+  format_qualitative() |>
+  cols_width(
+    Business ~ px(300)
+  ) |>
+  pmp_table_theme()
+
+download_button(df_with_condition, "download-qualitative/not-completed.xlsx")
+```
+
+### E-Zone only
+
+```{r}
+df_with_condition <- df |>
+  filter(`E-Zone` == "✅") |>
+  select(-c(`E-Zone`, Started, Survey))
+
+df_with_condition |>
+  gt() |>
+  format_qualitative() |>
+  cols_width(
+    Business ~ px(300)
+  ) |>
+  pmp_table_theme()
+
+download_button(df_with_condition, "download-qualitative/completed-ezone.xlsx")
+```
+
+:::
+
+<br/>
+
+::: {.button-container}
+<a href="/results.html" class="custom-button">Go to results</a>
+:::

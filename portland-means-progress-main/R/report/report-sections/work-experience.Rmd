@@ -1,0 +1,155 @@
+
+<!-- Work experience -->
+
+<div class = "page-yellow">
+
+<div class = "wrap-columns">
+
+<div class = "columns-35">
+
+## Work Experience
+
+How many interns did your business host in the Portland Metro area?
+
+</div>
+<div class = "columns-65">
+
+```{r text_q07}
+# filter interns data
+df_interns_data <- df_pmp_data |>
+  select(year, interns_noneli, interns_eli, interns_wsi) |>
+  pivot_longer(-year, names_to = "survey_item") |>
+  mutate(
+    item_label = fct_recode(
+      survey_item,
+      "The Script/\nEmerging Leaders" = "interns_eli",
+      "SummerWorks" = "interns_wsi",
+      "Other" = "interns_noneli"
+    ),
+    value_label = case_when(
+      survey_item == "interns_noneli" & is.na(value) ~ "Did not track",
+      value == 0 ~ "N = 0",
+      is.na(value) ~ "None recorded",
+      .default = ""
+    ),
+    fill_values = if_else(
+      !is.na(value) &
+        value > 0,
+      pmp_palette$Yellow,
+      pmp_palette$`Dark teal`
+    ),
+    value = case_when(value == 0 ~ 1, value > 0 ~ value)
+  ) |>
+  replace_na(list(value = 1))
+
+# add total
+df_interns_data_full <- df_interns_data |>
+  bind_rows(
+    df_pmp_data |>
+      select(year, interns_noneli, interns_eli, interns_wsi) |>
+      pivot_longer(-year, names_to = "survey_item") |>
+      group_by(year) |>
+      summarise(value_tot = sum(value, na.rm = TRUE)) |>
+      mutate(fill_values = pmp_palette$`Dark teal`,
+             item_label = "Total",
+             value = 1,
+             value_label = as.character(value_tot))
+  ) |> 
+  mutate(item_label = fct_relevel(item_label, "The Script/\nEmerging Leaders", "SummerWorks", "Other", "Total"))
+
+# graph
+# waffle are the same color as the background
+interns_plot <- ggplot(df_interns_data_full) +
+  waffle::geom_waffle(
+    aes(values = value, fill = fill_values),
+    size = 2,
+    radius = unit(10, "pt"),
+    colour = pmp_palette$`Dark teal`,
+    flip = TRUE,
+    show.legend = FALSE,
+    make_proportional = FALSE,
+    na.rm = TRUE
+  ) +
+  ggtext::geom_textbox(
+    aes(label = value_label, y = 0.5, x = 0.5),
+    hjust = 0,
+    halign = 0,
+    vjust = 0.25,
+    valign = 0.5,
+    fill = NA,
+    width = unit(20, "lines"),
+    family = "Gilroy ExtraBold",
+    size = 8,
+    colour = pmp_palette$`Light blue`,
+    box.colour = NA
+  ) +
+  facet_grid(year ~ item_label, switch = "y", space = "free") +
+  scale_fill_identity() +
+  scale_x_continuous(limits = c(0.5, 10.5)) +
+  scale_y_continuous(expand = c(0, 1)) +
+  theme_void() +
+  theme(
+    panel.background = element_rect(fill = pmp_palette$`Dark teal`, color = pmp_palette$`Dark teal`),
+    plot.background = element_rect(fill = pmp_palette$`Dark teal`, color = pmp_palette$`Dark teal`),
+    panel.grid = element_blank(),
+    axis.text.y = element_blank(),
+    plot.caption = element_text(
+      colour = "#FFFFFF",
+      family = "Gilroy Medium",
+      hjust = 0,
+      size = 14,
+      margin = unit(c(2, 0, 0, 0), "lines")
+    ),
+    strip.text = element_text(
+      colour = "#FFFFFF",
+      vjust = 1,
+      family = "Gilroy ExtraBold",
+      size = 24
+    ),
+    strip.text.y = element_text(
+      colour = pmp_palette$Teal,
+      angle = 90,
+      hjust = 0.5
+    ),
+    strip.text.x = element_text(hjust = 0, margin = unit(c(2, 0, 2, 0.8), "lines")),
+    panel.spacing.y = unit(3, "lines")
+  )
+
+# same as menu plot
+cowplot::plot_grid(interns_plot) +
+  theme(plot.background = element_rect(colour = pmp_palette$`Dark teal`, fill = pmp_palette$`Dark teal`))
+```
+
+</div>
+</div>
+
+</div>
+
+<!-- Work experience -->
+
+<div class = "page-yellow">
+
+<div class = "wrap-columns">
+
+<div class = "columns-35">
+
+## Work Experience
+
+Did your business implement any of the following policies, practices, or actions?
+
+</div>
+<div class = "columns-65">
+
+```{r menu_q10}
+menu_across_years(
+  data = df_pmp_data,
+  questions = df_questions_label,
+  question_block = "q10",
+  point_color = pmp_palette$Yellow
+)
+```
+
+</div>
+</div>
+
+</div>

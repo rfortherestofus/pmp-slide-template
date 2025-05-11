@@ -40,5 +40,8 @@ So for the shortcode to work properly, you will need two things:
 - The style file `theme.scss` that contains the styling for the classes `two-col-footer` and `color-bar`.
 - The image file `PMP - Blue.png` located in a directory `assets/imgs/` (the `../../../../../` part in the `src` path is just a clunky way to navigate out of the directories that RevealJS creates.)
 
-> [!IMPORTANT]
-> This footer works only properly within `<div>`-containers of the class `.theme-two-cols`.
+::: {.callout-important}
+
+This footer works only properly within `<div>`-containers of the class `.theme-two-cols`.
+
+:::

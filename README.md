@@ -20,7 +20,7 @@ This documentation was last rendered
 Sys.time()
 ```
 
-    [1] "2025-05-11 10:51:54 CEST"
+    [1] "2025-05-11 10:56:02 CEST"
 
 ## Using the `pmp-footer` shortcode
 
@@ -45,5 +45,7 @@ So for the shortcode to work properly, you will need two things:
   (the `../../../../../` part in the `src` path is just a clunky way to
   navigate out of the directories that RevealJS creates.)
 
-> \[!IMPORTANT\] This footer works only properly within
-> `<div>`-containers of the class `.theme-two-cols`.
+> [!IMPORTANT]
+>
+> This footer works only properly within `<div>`-containers of the class
+> `.theme-two-cols`.

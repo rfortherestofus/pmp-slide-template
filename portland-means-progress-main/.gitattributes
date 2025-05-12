@@ -1,9 +1,0 @@
-# This file avoids us getting conflicts that are due to Windows/Mac line endings
-
-# We'll let Git's auto-detection algorithm infer if a file is text. If it is,
-# enforce LF line endings regardless of OS or git configurations.
-* text=auto eol=lf
-
-# Isolate binary files in case the auto-detection algorithm fails and
-# marks them as text files (which could break them).
-*.{png,jpg,jpeg,gif,webp,woff,woff2} binary

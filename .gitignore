@@ -54,3 +54,4 @@ template_files/
 example_files/
 *.html
 _quarto_internal_scss_error.scss
+/.luarc.json

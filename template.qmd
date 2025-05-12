@@ -27,7 +27,7 @@ format:
 :::
 
 
-::: {.right-col style="margin-top: 0px;"}
+::: {.right-col style="margin-top: -75px;"}
 
 ::: {.right-heading}
 Introduction
@@ -86,8 +86,6 @@ Some chart here
 :::
 
 ::::
-
-
 
 {{< pmp-footer >}}
 
